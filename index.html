@@ -16,10 +16,21 @@
       </p>
       <p id="quote"></p>
       <!-- This will display our quote -->
-      <p id="message"></p>
+
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <p id="message"></p>
+        </div>
+      </div>
       <!-- This will display any status messages -->
       <div>
-        <input type="text" aria-label="current word" id="typed-value" />
+        <input
+          type="text"
+          disabled
+          aria-label="current word"
+          id="typed-value"
+        />
         <!-- The textbox for typing -->
         <button type="button" id="start">Start</button>
         <!-- To start the game -->

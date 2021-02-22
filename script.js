@@ -23,7 +23,24 @@ const quoteElement = document.getElementById("quote");
 const messageElement = document.getElementById("message");
 const typedValueElement = document.getElementById("typed-value");
 
+function toggleModal() {
+  modal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+  if (event.target === modal) {
+    toggleModal();
+  }
+}
+
+const modal = document.querySelector(".modal");
+const closeButton = document.querySelector(".close-button");
+
+closeButton.addEventListener("click", toggleModal);
+window.addEventListener("click", windowOnClick);
+
 document.getElementById("start").addEventListener("click", () => {
+  typedValueElement.disabled = false;
   // get a quote
   const quoteIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[quoteIndex];
@@ -53,6 +70,7 @@ document.getElementById("start").addEventListener("click", () => {
 
   // start the timer
   startTime = new Date().getTime();
+  console.log(startTime);
 });
 
 typedValueElement.addEventListener("input", () => {
@@ -67,6 +85,8 @@ typedValueElement.addEventListener("input", () => {
     const elapsedTime = new Date().getTime() - startTime;
     const message = `Congrats! You finished in ${elapsedTime / 1000} seconds.`;
     messageElement.innerText = message;
+    toggleModal();
+    typedValueElement.disabled = true;
   } else if (typedValue.endsWith(" ") && typedValue.trim() === currentWord) {
     // end of word
     // clear the typedValueElement for the new word
