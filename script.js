@@ -35,7 +35,10 @@ function windowOnClick(event) {
 
 // let existingScores = localStorage.getItem("scores");
 // existingScores = existingScores ? existingScores.split(',') : [];
-let existingScores = localStorage.getItem("scores").split(",") || [];
+let existingScores =
+  localStorage.getItem("scores") !== null
+    ? localStorage.getItem("scores").split(",")
+    : [];
 let itemsList = document.querySelector(".scoreList");
 
 function populateList(scores = [], scoresList) {
