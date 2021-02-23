@@ -33,6 +33,25 @@ function windowOnClick(event) {
   }
 }
 
+// let existingScores = localStorage.getItem("scores");
+// existingScores = existingScores ? existingScores.split(',') : [];
+let existingScores = localStorage.getItem("scores").split(",") || [];
+let itemsList = document.querySelector(".scoreList");
+
+function populateList(scores = [], scoresList) {
+  scoresList.innerHTML = scores
+    .map((score, i) => {
+      return `
+      <li>
+      <p>Your latest score: ${score}.</p>
+      </li>
+    `;
+    })
+    .join("");
+}
+
+populateList(existingScores, itemsList);
+
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close-button");
 
@@ -82,11 +101,20 @@ typedValueElement.addEventListener("input", () => {
   if (typedValue === currentWord && wordIndex === words.length - 1) {
     // end sentence
     // Display success
-    const elapsedTime = new Date().getTime() - startTime;
-    const message = `Congrats! You finished in ${elapsedTime / 1000} seconds.`;
+    const elapsedTime = (new Date().getTime() - startTime) / 1000;
+
+    // display modal on completions
+    const message = `Congrats! You finished in ${elapsedTime} seconds.`;
     messageElement.innerText = message;
     toggleModal();
+
     typedValueElement.disabled = true;
+
+    // update the latest scores list
+    existingScores.unshift(elapsedTime.toString());
+    if (existingScores.length > 5) existingScores.pop();
+    localStorage.setItem("scores", existingScores.toString());
+    populateList(existingScores, itemsList);
   } else if (typedValue.endsWith(" ") && typedValue.trim() === currentWord) {
     // end of word
     // clear the typedValueElement for the new word
